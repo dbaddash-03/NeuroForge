@@ -1,0 +1,10 @@
+NeuroForge is a tiny laboratory for understanding language models.
+A language model predicts the next token from the tokens that came before it.
+Embeddings turn discrete symbols into vectors.
+Attention lets every position gather information from earlier positions.
+A Transformer block combines attention, normalization, residual connections, and a feed-forward network.
+Stacking blocks creates a deeper representation of context.
+Training changes the model parameters to reduce next-token prediction loss.
+Generation repeatedly samples the next token and appends it to the sequence.
+This small system is educational rather than production scale.
+The goal is to make the invisible machinery of an LLM visible.

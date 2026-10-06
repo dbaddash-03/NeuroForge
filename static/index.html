@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeuroForge — LLM From Scratch Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <div class="noise"></div>
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">N</div>
+      <div>
+        <strong>NEUROFORGE</strong>
+        <span>LLM / FROM SCRATCH</span>
+      </div>
+    </div>
+
+    <div class="status-pill"><span></span> LOCAL ENGINE ONLINE</div>
+
+    <nav>
+      <button class="nav-item active" data-view="overview"><span>01</span> Overview</button>
+      <button class="nav-item" data-view="pipeline"><span>02</span> Pipeline</button>
+      <button class="nav-item" data-view="playground"><span>03</span> Playground</button>
+      <button class="nav-item" data-view="architecture"><span>04</span> Architecture</button>
+      <button class="nav-item" data-view="training"><span>05</span> Training Lab</button>
+      <button class="nav-item" data-view="experiments"><span>06</span> Experiments</button>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="mini-label">REFERENCE PATH</div>
+      <div class="reference">Text → Attention → GPT → Pretrain → Fine-tune</div>
+      <div class="version">NF-STUDIO v1.0</div>
+    </div>
+  </aside>
+
+  <main class="app">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">BUILD / OBSERVE / EXPERIMENT</div>
+        <h1 id="page-title">LLM From Scratch Studio</h1>
+      </div>
+      <div class="top-actions">
+        <button class="icon-btn" id="themeBtn" title="Toggle contrast">◐</button>
+        <button class="outline-btn" onclick="scrollToPlayground()">RUN MODEL <span>↗</span></button>
+      </div>
+    </header>
+
+    <section id="overview" class="view active">
+      <div class="hero-grid">
+        <div class="hero-card">
+          <div class="hero-kicker">01 / CORE IDEA</div>
+          <h2>Make the black box<br><em>transparent.</em></h2>
+          <p>Explore a compact GPT-style language model as a system of understandable parts — from raw characters to causal attention and next-token prediction.</p>
+          <div class="hero-actions">
+            <button class="lime-btn" onclick="setView('playground')">Open Playground <span>→</span></button>
+            <button class="text-btn" onclick="setView('architecture')">Inspect architecture</button>
+          </div>
+        </div>
+        <div class="signal-card">
+          <div class="signal-head"><span>MODEL SIGNAL</span><b>LIVE</b></div>
+          <div class="orb"><div class="orb-core"></div></div>
+          <div class="signal-readout"><span>CONTEXT</span><strong>128 TOKENS</strong></div>
+          <div class="signal-readout"><span>ATTENTION</span><strong>6 HEADS</strong></div>
+          <div class="signal-readout"><span>LAYERS</span><strong>4 BLOCKS</strong></div>
+        </div>
+      </div>
+
+      <div class="metric-row">
+        <div class="metric"><span>MODEL SIZE</span><strong>≈ 2.0M</strong><small>educational scale</small></div>
+        <div class="metric light"><span>CORE</span><strong>GPT</strong><small>decoder-only transformer</small></div>
+        <div class="metric"><span>TRAINING</span><strong>LOCAL</strong><small>PyTorch / CPU or GPU</small></div>
+        <div class="metric accent"><span>MODE</span><strong>VISIBLE</strong><small>inspect every stage</small></div>
+      </div>
+
+      <div class="section-head"><div><span class="eyebrow">SYSTEM MAP</span><h3>The learning path</h3></div><span class="mono">01—06</span></div>
+      <div class="path-grid">
+        <article class="path-card"><b>01</b><h4>Text data</h4><p>Build training sequences from a corpus.</p><span>DATASET</span></article>
+        <article class="path-card"><b>02</b><h4>Tokenization</h4><p>Map symbols into model-readable IDs.</p><span>TOKENS</span></article>
+        <article class="path-card"><b>03</b><h4>Attention</h4><p>Learn which previous positions matter.</p><span>CONTEXT</span></article>
+        <article class="path-card"><b>04</b><h4>Transformer</h4><p>Stack residual blocks and feed-forward layers.</p><span>REPRESENTATION</span></article>
+        <article class="path-card"><b>05</b><h4>Pretraining</h4><p>Optimize next-token prediction loss.</p><span>LEARNING</span></article>
+        <article class="path-card"><b>06</b><h4>Generation</h4><p>Sample new tokens autoregressively.</p><span>OUTPUT</span></article>
+      </div>
+    </section>
+
+    <section id="pipeline" class="view">
+      <div class="page-intro"><span class="eyebrow">02 / PIPELINE</span><h2>From characters to cognition.</h2><p>Each stage is deliberately exposed so you can trace how a sequence becomes a prediction.</p></div>
+      <div class="pipeline">
+        <div class="pipeline-step"><span>01</span><strong>RAW TEXT</strong><code>"attention learns context"</code></div>
+        <div class="arrow">↓</div>
+        <div class="pipeline-step dark"><span>02</span><strong>TOKEN IDs</strong><code>[97, 116, 116, 101, 110...]</code></div>
+        <div class="arrow">↓</div>
+        <div class="pipeline-step lime"><span>03</span><strong>EMBEDDINGS</strong><code>128 × 192 vectors</code></div>
+        <div class="arrow">↓</div>
+        <div class="pipeline-step"><span>04</span><strong>CAUSAL ATTENTION</strong><code>6 heads × 32 dims</code></div>
+        <div class="arrow">↓</div>
+        <div class="pipeline-step dark"><span>05</span><strong>TRANSFORMER STACK</strong><code>4 residual blocks</code></div>
+        <div class="arrow">↓</div>
+        <div class="pipeline-step lime"><span>06</span><strong>LOGITS</strong><code>256 possible next bytes</code></div>
+      </div>
+    </section>
+
+    <section id="playground" class="view">
+      <div class="page-intro"><span class="eyebrow">03 / PLAYGROUND</span><h2>Prompt the tiny brain.</h2><p>The default model is randomly initialized until you run training. The UI falls back to a deterministic educational explanation when needed.</p></div>
+      <div class="playground-grid">
+        <div class="prompt-panel">
+          <label>INPUT PROMPT</label>
+          <textarea id="prompt">The future of AI is</textarea>
+          <div class="controls">
+            <div><span>Temperature</span><input id="temperature" type="range" min="0.1" max="1.5" value="0.8" step="0.1"><b id="tempValue">0.8</b></div>
+            <div><span>Tokens</span><input id="tokens" type="range" min="20" max="160" value="80" step="10"><b id="tokenValue">80</b></div>
+          </div>
+          <button class="lime-btn full" id="generateBtn">GENERATE <span>↗</span></button>
+        </div>
+        <div class="output-panel">
+          <div class="output-head"><span>MODEL OUTPUT</span><span id="modeTag">WAITING</span></div>
+          <div id="output" class="output">Your generated continuation will appear here.</div>
+          <div class="output-meta"><span>CAUSAL LM</span><span>TOP-K 40</span><span>LOCAL</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="architecture" class="view">
+      <div class="page-intro"><span class="eyebrow">04 / ARCHITECTURE</span><h2>The anatomy of a tiny GPT.</h2><p>Hovering is not required — every component is represented directly in the system view.</p></div>
+      <div class="arch-stack">
+        <div class="arch-node input-node"><span>INPUT</span><strong>Token IDs</strong><small>batch × sequence</small></div>
+        <div class="connector">↓</div>
+        <div class="arch-node"><span>EMBEDDING</span><strong>Token + Position</strong><small>256 × 192 + 128 × 192</small></div>
+        <div class="connector">↓</div>
+        <div class="block-row">
+          <div class="arch-node active-node"><span>ATTENTION</span><strong>6 Heads</strong><small>causal self-attention</small></div>
+          <div class="arch-node"><span>MLP</span><strong>4× Expansion</strong><small>GELU activation</small></div>
+          <div class="arch-node"><span>NORM</span><strong>Pre-LN</strong><small>stable residual flow</small></div>
+        </div>
+        <div class="connector">↓ × 4 blocks</div>
+        <div class="arch-node dark-node"><span>OUTPUT HEAD</span><strong>Next-token logits</strong><small>weight-tied projection</small></div>
+      </div>
+    </section>
+
+    <section id="training" class="view">
+      <div class="page-intro"><span class="eyebrow">05 / TRAINING LAB</span><h2>Turn parameters into behavior.</h2><p>Use the included corpus and training script to observe loss reduction on a small local model.</p></div>
+      <div class="training-grid">
+        <div class="train-console">
+          <div class="console-top"><span>TRAINING CONSOLE</span><span class="green-dot">● READY</span></div>
+          <pre><span>$</span> python -m backend.train
+
+<span class="muted">NeuroForge / tiny GPT
+context_length = 128
+d_model        = 192
+heads          = 6
+layers         = 4</span>
+
+<span class="lime">step=0000 loss=5.53
+step=0010 loss=4.72
+step=0020 loss=4.11
+step=0030 loss=3.68
+step=0040 loss=3.21</span>
+
+<span class="muted">checkpoint → neuroforge_tiny.pt</span></pre>
+        </div>
+        <div class="loss-card">
+          <span class="eyebrow">LOSS CURVE</span>
+          <div class="chart">
+            <div class="line l1"></div><div class="line l2"></div><div class="line l3"></div>
+            <span>5.5</span><span>4.7</span><span>4.1</span><span>3.2</span><b>steps →</b>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="experiments" class="view">
+      <div class="page-intro"><span class="eyebrow">06 / EXPERIMENTS</span><h2>Make the model your laboratory.</h2><p>Change one variable at a time and compare what the system does.</p></div>
+      <div class="experiment-table">
+        <div class="thead"><span>EXPERIMENT</span><span>VARIABLE</span><span>BASELINE</span><span>IDEA</span></div>
+        <div class="tr"><strong>Attention depth</strong><span>n_layers</span><b>4</b><em>Does depth improve coherence?</em></div>
+        <div class="tr"><strong>Context horizon</strong><span>context_length</span><b>128</b><em>How much history is useful?</em></div>
+        <div class="tr"><strong>Creativity</strong><span>temperature</span><b>0.8</b><em>Explore deterministic vs diverse sampling.</em></div>
+        <div class="tr"><strong>Capacity</strong><span>d_model</span><b>192</b><em>Trade parameters for representation power.</em></div>
+      </div>
+    </section>
+
+    <footer>
+      <span>NEUROFORGE STUDIO</span>
+      <span>Educational implementation • Inspired by the LLM-from-scratch learning progression</span>
+    </footer>
+  </main>
+  <script src="/static/app.js"></script>
+</body>
+</html>
